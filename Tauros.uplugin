@@ -1,0 +1,35 @@
+﻿{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0",
+  "FriendlyName": "Tauros",
+  "Description": "",
+  "Category": "Other",
+  "CreatedBy": "tarnishablec",
+  "CreatedByURL": "https://github.com/tarnishablec",
+  "DocsURL": "",
+  "MarketplaceURL": "",
+  "CanContainContent": true,
+  "IsBetaVersion": true,
+  "IsExperimentalVersion": false,
+  "Installed": false,
+  "Modules": [
+    {
+      "Name": "Tauros",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ],
+  "Plugins": [
+    {
+      "Name": "OnlineSubsystemSteam",
+      "Optional": false,
+      "Enabled": true
+    },
+    {
+      "Name": "OnlineServicesEOSGS",
+      "Optional": false,
+      "Enabled": true
+    }
+  ]
+}
