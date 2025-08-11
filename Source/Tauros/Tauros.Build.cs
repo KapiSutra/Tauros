@@ -45,6 +45,8 @@ public class Tauros : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
+				"EOSSDK",
+				"EOSShared", "Steamworks",
 				// ... add private dependencies that you statically link with here ...	
 			}
 		);
