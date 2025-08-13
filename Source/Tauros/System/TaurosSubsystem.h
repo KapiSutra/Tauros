@@ -6,7 +6,6 @@
 
 #include "CoreMinimal.h"
 #include "Online/OnlineServices.h"
-#include "Subsystems/GameInstanceSubsystem.h"
 #include "TaurosSubsystem.generated.h"
 
 /**
@@ -26,9 +25,16 @@ public:
 
     //
 
-    void EosExternalLogin(const ULocalPlayer* LocalPlayer,
-                          EOS_EExternalAccountType AccountType,
-                          EOS_EExternalCredentialType CredentialType);
+    void Eos_ExternalToken_Authorize(const ULocalPlayer* LocalPlayer,
+                                     const FString& TokenType,
+                                     EOS_EExternalAccountType AccountType,
+                                     EOS_EExternalCredentialType CredentialType);
+
+
+    UFUNCTION(BlueprintCallable)
+    void Eos_OidcAuthCode_Authorize(const ULocalPlayer* LocalPlayer, const FString& Issuer);
+
+    void OpenIdStartLoopbackServer(uint32 Port);
 
 protected:
     FTSTicker::FDelegateHandle TickHandle;
@@ -50,4 +56,6 @@ protected:
     };
 
     FOnlineServicesInfo OnlineServicesInfo;
+
+    TOptional<uint32> Oidc_LoopbackPort = {19654};
 };
