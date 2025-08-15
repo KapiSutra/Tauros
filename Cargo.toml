@@ -1,0 +1,34 @@
+[package]
+name = "tauros"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = { version = "*" }
+cxx = { version = "*", features = ["std"] }
+openidconnect = { version = "*" }
+
+axum = { version = "*" }
+serde = { version = "*" }
+tokio = { version = "*" }
+webbrowser = { version = "*" }
+
+[build-dependencies]
+cxx-build = "*"
+
+
+[lib]
+crate-type = ["staticlib"]
+path = "ffi/index.rs"
+
+[profile.dev]
+debug = 2
+debug-assertions = true
+overflow-checks = true
+lto = false
+panic = "unwind"
+codegen-units = 8
+opt-level = 0
+
+[profile.release]
+panic = "unwind"
