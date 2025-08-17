@@ -30,6 +30,16 @@
       "Name": "OnlineServicesEOSGS",
       "Optional": false,
       "Enabled": true
+    },
+    {
+      "Name": "Dwebble",
+      "Optional": false,
+      "Enabled": true
     }
-  ]
+  ],
+  "PreBuildSteps": {
+    "Win64": [
+      "$(PluginDir)/PreBuildSteps.bat"
+    ]
+  }
 }

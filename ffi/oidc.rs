@@ -1,13 +1,13 @@
-use std::i32;
-use std::sync::Arc;
-
+use axum::{Router, extract::Query, routing::get};
 use openidconnect::core::*;
 use openidconnect::{
     AuthenticationFlow, AuthorizationCode, ClientId, ClientSecret, CsrfToken, IssuerUrl, Nonce,
     PkceCodeChallenge, RedirectUrl, Scope,
 };
 use openidconnect::{OAuth2TokenResponse, reqwest};
-use tokio::sync::Mutex;
+use std::i32;
+use std::sync::Arc;
+use tokio::sync::{Mutex, oneshot};
 
 pub async fn oidc_access_token(
     issuer: String,
@@ -47,11 +47,8 @@ pub async fn oidc_access_token(
 
     webbrowser::open(auth_url.as_str())?;
 
-    use axum::{Router, extract::Query, routing::get};
-    use serde::Deserialize;
-    use tokio::sync::oneshot;
-
-    #[derive(Deserialize)]
+    #[derive(serde::Deserialize)]
+    #[allow(dead_code)]
     struct Params {
         code: String,
         state: String,
@@ -73,6 +70,10 @@ pub async fn oidc_access_token(
 
             async move {
                 assert_eq!(p.state, expected_state_clone);
+
+                if p.state != expected_state_clone {
+                    return "State does not match.";
+                }
 
                 if let Some(sender) = shared_tx_clone.lock().await.take() {
                     let _ = sender.send(p);
@@ -96,12 +97,49 @@ pub async fn oidc_access_token(
         .await?;
 
     let params = rx.await?;
+    let code = params.code;
 
     let token_response = client
-        .exchange_code(AuthorizationCode::new(params.code))?
+        .exchange_code(AuthorizationCode::new(code))?
         .set_pkce_verifier(pkce_verifier)
         .request_async(&http_client)
         .await?;
 
     Ok(token_response.access_token().secret().to_string())
 }
+// 
+// use crate::ffi::OidcResult;
+// 
+// pub fn oidc_access_token_callback(
+//     issuer: String,
+//     client_id: String,
+//     client_secret: String,
+//     loopback_port: i32,
+//     loopback_route: String,
+//     callback: fn(result: OidcResult),
+// ) {
+//     tokio::spawn(async move {
+//         let result = match oidc_access_token(
+//             issuer,
+//             client_id,
+//             (!client_secret.trim().is_empty()).then_some(client_secret),
+//             loopback_port.into(),
+//             loopback_route,
+//         )
+//         .await
+//         {
+//             Ok(access_token) => OidcResult {
+//                 bSuccess: true,
+//                 AccessToken: access_token,
+//                 ErrorMessage: "".to_string(),
+//             },
+//             Err(e) => OidcResult {
+//                 bSuccess: false,
+//                 AccessToken: "".to_string(),
+//                 ErrorMessage: e.to_string(),
+//             },
+//         };
+// 
+//         callback(result);
+//     });
+// }
