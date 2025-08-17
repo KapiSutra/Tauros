@@ -36,10 +36,5 @@
       "Optional": false,
       "Enabled": true
     }
-  ],
-  "PreBuildSteps": {
-    "Win64": [
-      "$(PluginDir)/PreBuildSteps.bat"
-    ]
-  }
+  ]
 }

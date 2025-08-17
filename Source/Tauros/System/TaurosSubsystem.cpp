@@ -215,19 +215,3 @@ void UTaurosSubsystem::Eos_OidcAuthCode_Authorize(const ULocalPlayer* LocalPlaye
     Request->ProcessRequest();
 }
 
-void UTaurosSubsystem::OpenIdStartLoopbackServer(const uint32 Port)
-{
-    const auto Router = FHttpServerModule::Get().GetHttpRouter(Port, true);
-    const auto RouteHandle = Router->BindRoute(
-        FHttpPath("/openid/callback"), EHttpServerRequestVerbs::VERB_GET, FHttpRequestHandler::CreateLambda(
-            [](const FHttpServerRequest& Request, const FHttpResultCallback& OnComplete)
-            {
-                const auto& QueryParams = Request.QueryParams;
-                auto Response = FHttpServerResponse::Create(FString(""), TEXT("text/plain"));
-                OnComplete(MoveTemp(Response));
-                return true;
-            })
-    );
-
-    FHttpServerModule::Get().StartAllListeners();
-}
