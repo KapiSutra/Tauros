@@ -5,6 +5,9 @@
 #include <eos_common.h>
 
 #include "CoreMinimal.h"
+#include "UE5Coro.h"
+#include "Dwebble/Oidc/DwebbleOidcTypes.h"
+#include "Online/Auth.h"
 #include "Online/OnlineServices.h"
 #include "TaurosSubsystem.generated.h"
 
@@ -25,15 +28,23 @@ public:
 
 	//
 
-	void Eos_ExternalToken_Authorize(const ULocalPlayer* LocalPlayer,
-	                                 const FString& TokenType,
-	                                 EOS_EExternalAccountType AccountType,
-	                                 EOS_EExternalCredentialType CredentialType);
+	// void Eos_ExternalToken_Authorize(const ULocalPlayer* LocalPlayer,
+	//                                  const FString& TokenType,
+	//                                  EOS_EExternalAccountType AccountType,
+	//                                  EOS_EExternalCredentialType CredentialType);
+
+	FVoidCoroutine Eos_ExternalToken_Authorize(
+		const ULocalPlayer* LocalPlayer,
+		const FString& TokenType,
+		const EOS_EExternalAccountType AccountType,
+		const EOS_EExternalCredentialType CredentialType,
+		const TSharedRef<TOptional<UE::Online::FAccountInfo>> AccountInfo,
+		UE5Coro::TLatentContext<> _);
 
 
 	UE_DEPRECATED(5, "Use Dwebble Oidc")
 	UFUNCTION(BlueprintCallable)
-	void Eos_OidcAuthCode_Authorize(const ULocalPlayer* LocalPlayer, const FString& Issuer);
+	void Eos_OidcAuthCode_Authorize_Old(const ULocalPlayer* LocalPlayer, const FString& Issuer);
 
 protected:
 	FTSTicker::FDelegateHandle TickHandle;

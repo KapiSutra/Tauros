@@ -2,7 +2,20 @@
 
 #include "Tauros.h"
 
+#include "OnlineSubsystem.h"
+
 #define LOCTEXT_NAMESPACE "FTaurosModule"
+
+
+class FOnlineFactoryTauros final : public IOnlineFactory
+{
+public:
+	virtual IOnlineSubsystemPtr CreateSubsystem(FName InstanceName) override
+	{
+		
+	};
+};
+
 
 void FTaurosModule::StartupModule()
 {
@@ -16,5 +29,5 @@ void FTaurosModule::ShutdownModule()
 }
 
 #undef LOCTEXT_NAMESPACE
-	
+
 IMPLEMENT_MODULE(FTaurosModule, Tauros)
