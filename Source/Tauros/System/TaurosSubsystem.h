@@ -31,6 +31,7 @@ public:
 	                                 EOS_EExternalCredentialType CredentialType);
 
 
+	UE_DEPRECATED(5, "Use Dwebble Oidc")
 	UFUNCTION(BlueprintCallable)
 	void Eos_OidcAuthCode_Authorize(const ULocalPlayer* LocalPlayer, const FString& Issuer);
 
