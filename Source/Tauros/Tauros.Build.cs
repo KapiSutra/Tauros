@@ -54,7 +54,7 @@ public class Tauros : ModuleRules
 				"Dwebble",
 				"HTTP",
 				"Json",
-				"UE5Coro", "Wynaut"
+				"UE5Coro", "Wynaut", "OnlineServicesCommon", "OnlineServicesEpicCommon"
 				// ... add private dependencies that you statically link with here ...	
 			}
 		);
